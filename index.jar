@@ -1,0 +1,103 @@
+// Interface para representar um sanduíche
+interface Sanduiche {
+    String getDescricao();
+    double getCusto();
+}
+
+// Implementação concreta da interface para um sanduíche de carne
+class SanduicheCarne implements Sanduiche {
+    @Override
+    public String getDescricao() {
+        return "Sanduíche de Carne";
+    }
+
+    @Override
+    public double getCusto() {
+        return 7.49;
+    }
+}
+
+// Decorator abstrato para ingredientes adicionais
+abstract class IngredienteAdicional implements Sanduiche {
+    protected Sanduiche sanduiche;
+
+    public IngredienteAdicional(Sanduiche sanduiche) {
+        this.sanduiche = sanduiche;
+    }
+
+    @Override
+    public String getDescricao() {
+        return sanduiche.getDescricao();
+    }
+
+    @Override
+    public double getCusto() {
+        return sanduiche.getCusto();
+    }
+}
+
+// Implementação concreta do decorator para frango assado
+class FrangoAssado extends IngredienteAdicional {
+    public FrangoAssado(Sanduiche sanduiche) {
+        super(sanduiche);
+    }
+
+    @Override
+    public String getDescricao() {
+        return super.getDescricao() + ", Frango Assado";
+    }
+
+    @Override
+    public double getCusto() {
+        return super.getCusto() + 4.50;
+    }
+}
+
+// Implementação concreta do decorator para pepperoni
+class Pepperoni extends IngredienteAdicional {
+    public Pepperoni(Sanduiche sanduiche) {
+        super(sanduiche);
+    }
+
+    @Override
+    public String getDescricao() {
+        return super.getDescricao() + ", Pepperoni";
+    }
+
+    @Override
+    public double getCusto() {
+        return super.getCusto() + 0.99;
+    }
+}
+
+// Implementação concreta do decorator para queijo mussarela ralado
+class QueijoMussarelaRalado extends IngredienteAdicional {
+    public QueijoMussarelaRalado(Sanduiche sanduiche) {
+        super(sanduiche);
+    }
+
+    @Override
+    public String getDescricao() {
+        return super.getDescricao() + ", Queijo Mussarela Ralado";
+    }
+
+    @Override
+    public double getCusto() {
+        return super.getCusto() + 2.00;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Criando um sanduíche de carne básico
+        Sanduiche sanduiche = new SanduicheCarne();
+
+        // Adicionando ingredientes adicionais usando decorators
+        sanduiche = new FrangoAssado(sanduiche);
+        sanduiche = new Pepperoni(sanduiche);
+        sanduiche = new QueijoMussarelaRalado(sanduiche);
+
+        // Imprimindo descrição e custo do sanduíche final
+        System.out.println(sanduiche.getDescricao() + " custa R$" + sanduiche.getCusto());
+    }
+}
